@@ -138,7 +138,7 @@ No autonomous outreach or background monitoring is scheduled. Next external work
 - [x] Exercise installed wheel and source distribution across all three examples in CI, including invalid input and overwrite refusal.
 - [x] Add manually dispatched, version-tag-checked PyPI trusted publishing after core/neural CI and distribution validation. See docs/PUBLISHING.md.
 - [x] Add a trial evidence ledger and explicit outcome definitions in docs/TRIAL_RESULTS.md.
-- [ ] Owner configures PyPI trusted publisher and GitHub environment; release a new tagged version using docs/PUBLISHING.md.
+- [ ] Owner configures PyPI trusted publisher; release a new tagged version using docs/PUBLISHING.md. GitHub environment setup is complete.
 - [ ] Collect five independent trials, three integrations, and two repeat uses; prioritize reliability fixes from recorded failures.
 - [ ] Complete representative current-system and commercial competitor comparisons with authorized data/access.
 

@@ -4,7 +4,7 @@ GitHub alpha v0.1.0a2 is published. PyPI publication is pending account configur
 
 ## One-time owner setup
 
-1. In GitHub repository settings, create the `pypi` environment with a required reviewer and restrict deployments to version tags (`v*`).
+1. GitHub repository environment setup is complete: the `pypi` environment exists, requires review from `varunbiluri`, and has a custom `v*` deployment policy. The release workflow also rejects any ref that is not the exact `refs/tags/v{project.version}` tag.
 2. In your PyPI account, configure a pending trusted publisher for a new project (or an existing project's publisher): project `pocketforge`, owner `varunbiluri`, repository `pocketforge`, workflow `release.yml`, environment `pypi`. Availability of the name must be resolved in PyPI; the repository does not reserve it.
 
 Use [PyPI's trusted-publisher setup](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/). No long-lived API token is needed.
