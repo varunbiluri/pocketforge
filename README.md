@@ -1,5 +1,7 @@
 # PocketForge
 
+[![CI](https://github.com/varunbiluri/pocketforge/actions/workflows/ci.yml/badge.svg)](https://github.com/varunbiluri/pocketforge/actions/workflows/ci.yml)
+
 An early local CLI for validating labeled text data, comparing CPU classifiers, and exporting a tested model. This is the first roadmap milestone, not the complete small-model training product. The project name and package name are provisional. Code is MIT licensed; datasets retain their separately stated licenses.
 
 ## Run locally
@@ -12,6 +14,7 @@ uv run pocketforge validate examples/support/task.yaml
 uv run pocketforge train examples/support/task.yaml --output runs/demo
 uv run pocketforge evaluate runs/demo --task examples/support/task.yaml
 uv run pocketforge predict runs/demo --text "Please cancel my membership"
+uv run pocketforge benchmark runs/demo --task examples/support/task.yaml --repeats 100
 uv run pytest
 ```
 
@@ -40,6 +43,7 @@ Validation and test may omit a class; reports explicitly list absent reference l
 - Explicit partitions, group/duplicate checks, dataset SHA-256 fingerprints, and dependency manifests.
 - Validation-based selection; held-out accuracy, macro-F1, per-class metrics, confusion matrices, and predictions.
 - Model persistence, a Python prediction function, and JSON/HTML reports.
+- Local inference benchmarks: median/p95 batch latency, throughput, model size, and raw timing samples in `benchmark.json`. Timing includes preprocessing but excludes model loading and network transport. Batch size, warmup, repetitions, and environment are recorded; these are local measurements rather than production capacity estimates.
 
 The included original 24-message fixture tests the workflow only. Its scores are not evidence of real-world model quality or commercial savings. A pinned public-data preparation script and a measured [BANKING77 CPU baseline](benchmarks/BANKING77.md) are also available. Pretrained-model fine-tuning, current-system comparison imports, latency/cost reports, and independent trials remain on the [roadmap](ROADMAP.md).
 

@@ -1,0 +1,24 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked --extra dev
+      - run: uv run pytest -q
+      - run: uv build
+      - name: Exercise packaged CLI
+        run: |
+          uv run --isolated --no-project --with ./dist/pocketforge-0.1.0a1-py3-none-any.whl pocketforge train examples/support/task.yaml --output runs/ci
+          uv run pocketforge evaluate runs/ci --task examples/support/task.yaml
+          uv run pocketforge predict runs/ci --text 'Cancel my subscription'
+          uv run pocketforge benchmark runs/ci --task examples/support/task.yaml --repeats 3

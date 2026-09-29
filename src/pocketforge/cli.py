@@ -5,6 +5,7 @@ import sys
 import yaml
 
 from .core import ContractError, evaluate, load_task, predict, train
+from .benchmark import benchmark
 
 
 def main():
@@ -21,6 +22,12 @@ def main():
     prediction = commands.add_parser("predict")
     prediction.add_argument("run")
     prediction.add_argument("--text", required=True)
+    timing = commands.add_parser("benchmark")
+    timing.add_argument("run")
+    timing.add_argument("--task", required=True)
+    timing.add_argument("--batch-size", type=int, default=1)
+    timing.add_argument("--repeats", type=int, default=20)
+    timing.add_argument("--warmup", type=int, default=3)
     args = parser.parse_args()
     try:
         if args.command == "validate":
@@ -30,6 +37,9 @@ def main():
             result = train(args.task, args.output)
         elif args.command == "evaluate":
             result = evaluate(args.run, args.task)
+        elif args.command == "benchmark":
+            result = benchmark(args.run, args.task, batch_size=args.batch_size,
+                               repeats=args.repeats, warmup=args.warmup)
         else:
             result = {"label": predict(args.run, args.text)}
         print(json.dumps(result, indent=2, ensure_ascii=False))
