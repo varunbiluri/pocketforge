@@ -1,0 +1,12 @@
+{"text":"My invoice includes an unexpected charge", "label":"billing"}
+{"text":"Please explain the payment on my bill", "label":"billing"}
+{"text":"I was charged twice this month", "label":"billing"}
+{"text":"How can I update my billing address", "label":"billing"}
+{"text":"The application crashes when I open it", "label":"technical"}
+{"text":"I cannot log in to my account", "label":"technical"}
+{"text":"The screen freezes and shows an error", "label":"technical"}
+{"text":"My password reset link does not work", "label":"technical"}
+{"text":"Please cancel my subscription", "label":"cancellation"}
+{"text":"I want to close my account", "label":"cancellation"}
+{"text":"Stop renewing my membership", "label":"cancellation"}
+{"text":"Please end my monthly plan", "label":"cancellation"}

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pocketforge"
+version = "0.1.0a1"
+description = "Build and evaluate local text classifiers from labeled examples."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = ["scikit-learn>=1.5,<2", "PyYAML>=6,<7", "joblib>=1.4,<2"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "build>=1,<2"]
+
+[project.scripts]
+pocketforge = "pocketforge.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

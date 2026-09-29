@@ -1,0 +1,6 @@
+{"text":"There is a duplicate payment on the invoice", "label":"billing"}
+{"text":"Why did my monthly bill increase", "label":"billing"}
+{"text":"The app crashes after I log in", "label":"technical"}
+{"text":"Password reset is broken", "label":"technical"}
+{"text":"Cancel the renewal of my membership", "label":"cancellation"}
+{"text":"I need to close this subscription", "label":"cancellation"}

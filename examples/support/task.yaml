@@ -1,0 +1,6 @@
+name: support-demo
+labels: [billing, technical, cancellation]
+splits:
+  train: train.jsonl
+  validation: validation.jsonl
+  test: test.jsonl

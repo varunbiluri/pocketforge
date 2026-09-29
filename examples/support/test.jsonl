@@ -1,0 +1,6 @@
+{"text":"Please check the charge on this invoice", "label":"billing"}
+{"text":"My card has two payments for one bill", "label":"billing"}
+{"text":"The application freezes on the login screen", "label":"technical"}
+{"text":"I get an error opening the password reset page", "label":"technical"}
+{"text":"End my subscription before next month", "label":"cancellation"}
+{"text":"I no longer want to renew my membership", "label":"cancellation"}
