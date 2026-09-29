@@ -1,6 +1,6 @@
 # Package publishing
 
-PyPI alpha v0.1.0a3 is published. Pushing main runs CI; it does not publish a package.
+PyPI alpha v0.1.0a4 is published and verified from the public PyPI index. Pushing main runs CI; it does not publish a package.
 
 ## One-time owner setup
 

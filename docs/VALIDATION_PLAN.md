@@ -40,7 +40,7 @@ Do not count stars, downloads, issue reactions, internal examples, BANKING77 exp
 
 | Item | Status | Evidence |
 | --- | --- | --- |
-| Public PyPI install | Pending update | `pocketforge==0.1.0a4` pending publication for install-doc polish. |
+| Public PyPI install | Complete | `pocketforge==0.1.0a4` verified from the public PyPI index with fresh pip and uv installs. |
 | Public feedback intake | Complete | GitHub issue template and this plan. |
 | Completed independent trials | 0 / 5 | No consenting developer reports yet. |
 | Integrations | 0 / 3 | No external integration evidence yet. |
