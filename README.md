@@ -68,6 +68,7 @@ Frozen mode trains a classifier over embeddings. Fine-tuned mode updates the enc
 ## Try your own workflow
 
 - [Developer trial kit](docs/TRIAL_KIT.md): quick start and feedback questions.
+- [Alpha validation plan](docs/VALIDATION_PLAN.md): public intake, counting rules, and current validation queue.
 - [Supported environments](docs/SUPPORT.md) and [third-party notices](docs/THIRD_PARTY.md).
 - [Alternative tools](docs/COMPETITORS.md): existing capabilities and unvalidated differentiation.
 - Additional original fixtures: `examples/documents/task.yaml` and `examples/intents/task.yaml`.

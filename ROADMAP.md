@@ -130,7 +130,7 @@ These sources were reviewed during the September 29 planning conversation. Reche
 
 Measured BANKING77 accuracy: TF-IDF 87.56%, frozen MiniLM 90.19%, one-epoch adapted MiniLM 87.20% on our modified split. The adaptation regression is retained and disclosed. See benchmarks/BANKING77.md and benchmarks/results for the protocol and evidence.
 
-No autonomous outreach or background monitoring is scheduled. Next external work: share docs/TRIAL_KIT.md with consenting developers and collect usage evidence. Next product work should follow their failures and priorities rather than add features merely to fill a calendar.
+No autonomous outreach or background monitoring is scheduled. Next external work: share docs/TRIAL_KIT.md and docs/VALIDATION_PLAN.md with consenting developers and collect usage evidence. Next product work should follow their failures and priorities rather than add features merely to fill a calendar.
 
 ## Next delivery pipeline
 
