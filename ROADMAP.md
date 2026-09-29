@@ -126,7 +126,7 @@ These sources were reviewed during the September 29 planning conversation. Reche
 | 3 — pretrained training | Pinned MiniLM frozen mode and optional encoder fine-tuning implemented; offline reload integration tested; full BANKING77 experiments recorded. |
 | 4 — usable preview | Readable HTML, external prediction imports, warm timing, cost worksheet, walkthrough, and examples implemented. Independent usability unvalidated. |
 | 5 — reliability and trials | Edge cases tested; two further tasks work without core changes. Trial kit prepared at user's request; no trial results collected. |
-| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, and CI configured. GitHub v0.1.0a2 published after passing CI; PyPI remains pending owner setup. |
+| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, and CI configured. GitHub v0.1.0a2 published after passing CI; PyPI release candidate v0.1.0a3 is being prepared for trusted publishing. |
 
 Measured BANKING77 accuracy: TF-IDF 87.56%, frozen MiniLM 90.19%, one-epoch adapted MiniLM 87.20% on our modified split. The adaptation regression is retained and disclosed. See benchmarks/BANKING77.md and benchmarks/results for the protocol and evidence.
 

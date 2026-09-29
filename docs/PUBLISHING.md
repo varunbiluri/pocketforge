@@ -1,6 +1,6 @@
 # Package publishing
 
-GitHub alpha v0.1.0a2 is published. PyPI publication is pending account configuration. Pushing main runs CI; it does not publish a package.
+GitHub alpha v0.1.0a2 is published. PyPI publication is pending account configuration and should use the next version tag. Pushing main runs CI; it does not publish a package.
 
 ## One-time owner setup
 
