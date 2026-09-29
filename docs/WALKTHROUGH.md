@@ -2,9 +2,69 @@
 
 Clone the repository and run `uv sync --locked --extra dev`. Run the README's support example first. Inspect `manifest.json` to see which model validation selected; inspect `report.html` to compare test quality. Keep final test results out of future model selection.
 
+## Install for a first trial
+
+Use Python 3.11 or 3.12 for this alpha. If your `python3` is newer or its virtual environments do not include pip, ask uv for a supported interpreter:
+
+```bash
+uv venv --python 3.12 .venv
+uv pip install --python .venv/bin/python pocketforge==0.1.0a4
+.venv/bin/python -m pocketforge.cli --help
+```
+
 ## Your own task
 
 Create a task YAML and three CSV/JSONL files following the README contract. Include every label in training and enough independent examples to evaluate important classes. Assign related examples the same nonempty `group` and keep groups in one split. The validator rejects exact normalized duplicates, but it cannot discover every semantic relationship.
+
+This is a complete tiny task you can paste into an empty directory:
+
+```bash
+mkdir customer-intents
+cat > customer-intents/task.yaml <<'YAML'
+name: customer-intents
+labels:
+  - refund
+  - shipping
+  - account
+splits:
+  train: train.jsonl
+  validation: validation.jsonl
+  test: test.jsonl
+YAML
+
+cat > customer-intents/train.jsonl <<'JSONL'
+{"text":"I want a refund for my damaged order","label":"refund","group":"r1"}
+{"text":"Please return my money for this purchase","label":"refund","group":"r2"}
+{"text":"Where is my package right now","label":"shipping","group":"s1"}
+{"text":"My delivery is late and tracking has not updated","label":"shipping","group":"s2"}
+{"text":"I cannot log into my account","label":"account","group":"a1"}
+{"text":"Please reset my password","label":"account","group":"a2"}
+JSONL
+
+cat > customer-intents/validation.jsonl <<'JSONL'
+{"text":"I need my money back","label":"refund","group":"rv1"}
+{"text":"Tracking says my package is delayed","label":"shipping","group":"sv1"}
+{"text":"I forgot my password and cannot sign in","label":"account","group":"av1"}
+JSONL
+
+cat > customer-intents/test.jsonl <<'JSONL'
+{"text":"I would like to return this and get refunded","label":"refund","group":"rt1"}
+{"text":"My order still has not arrived","label":"shipping","group":"st1"}
+{"text":"I am locked out of my account","label":"account","group":"at1"}
+JSONL
+```
+
+Run the workflow:
+
+```bash
+python -m pocketforge.cli validate customer-intents/task.yaml
+python -m pocketforge.cli train customer-intents/task.yaml --output runs/customer-intents
+python -m pocketforge.cli evaluate runs/customer-intents --task customer-intents/task.yaml
+python -m pocketforge.cli predict runs/customer-intents --text "The driver never delivered my box"
+python -m pocketforge.cli benchmark runs/customer-intents --task customer-intents/task.yaml --repeats 100
+```
+
+Open `runs/customer-intents/report.html`, or inspect `report.json`. The selected model is chosen from validation macro-F1. The held-out test result describes this tiny test set only; do not tune the task after looking at those numbers.
 
 ## Pretrained model
 
@@ -34,6 +94,25 @@ uv run pocketforge evaluate runs/demo --task examples/support/task.yaml --predic
 ```
 
 A current-system score is displayed alongside candidates, but cannot change the selected model. Test labels must not be used to generate real comparison predictions. Tests of this importer use deliberately fabricated predictions solely to verify accounting.
+
+To generate the required text hashes for a draft comparison file:
+
+```bash
+python - <<'PY'
+import hashlib, json
+from pathlib import Path
+
+for index, line in enumerate(Path("customer-intents/test.jsonl").read_text().splitlines()):
+    row = json.loads(line)
+    print(json.dumps({
+        "row_index": index,
+        "text_sha256": hashlib.sha256(row["text"].encode("utf-8")).hexdigest(),
+        "prediction": "REPLACE_WITH_CURRENT_SYSTEM_LABEL",
+    }))
+PY
+```
+
+Replace each `prediction` with the label produced by your existing system before running `evaluate --predictions`.
 
 ## Cost scenario
 

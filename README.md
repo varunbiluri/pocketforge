@@ -6,7 +6,15 @@ A local toolkit for validating labeled text data, comparing simple classifiers w
 
 ## Run locally
 
-Requires Python 3.11+ and uv. From this directory:
+Requires Python 3.11 or 3.12 and uv. Python 3.13+ is not part of the supported alpha test matrix yet. If your system `python3` points at a newer interpreter or creates a venv without pip, use uv to choose a supported interpreter:
+
+```bash
+uv venv --python 3.12 .venv
+uv pip install --python .venv/bin/python pocketforge==0.1.0a4
+.venv/bin/python -m pocketforge.cli --help
+```
+
+From this repository checkout:
 
 ```bash
 uv sync --extra dev --locked
@@ -78,7 +86,7 @@ Frozen mode trains a classifier over embeddings. Fine-tuned mode updates the enc
 Install from PyPI or this repository:
 
 ```bash
-python -m pip install pocketforge==0.1.0a3
+python -m pip install pocketforge==0.1.0a4
 ```
 
 Domain and trademark clearance remain unverified.

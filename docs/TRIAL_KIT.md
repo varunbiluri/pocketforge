@@ -8,7 +8,7 @@ A Python developer with a recurring single-label English text-classification tas
 
 ## Thirty-minute baseline trial
 
-1. Follow the README installation and support example without assistance. Record installation problems and time to first prediction.
+1. Follow the README installation and support example without assistance. Use Python 3.11 or 3.12; if your system `python3` is newer, use the README's `uv venv --python 3.12` path. Record installation problems and time to first prediction.
 2. Create your own task.yaml with at least two labels. Each label must appear in training. Use a representative held-out test set and group related messages together.
 3. Run validate, train, evaluate, and predict. Record the run manifest and metrics locally.
 4. Define your required quality, latency, and operational constraints. Determine whether the baseline meets them before adding the neural backend.
