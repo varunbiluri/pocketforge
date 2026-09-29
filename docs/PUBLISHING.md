@@ -1,0 +1,21 @@
+# Package publishing
+
+GitHub alpha v0.1.0a2 is published. PyPI publication is pending account configuration. Pushing main runs CI; it does not publish a package.
+
+## One-time owner setup
+
+1. In GitHub repository settings, create the `pypi` environment with a required reviewer and restrict deployments to version tags (`v*`).
+2. In your PyPI account, configure a pending trusted publisher for a new project (or an existing project's publisher): project `pocketforge`, owner `varunbiluri`, repository `pocketforge`, workflow `release.yml`, environment `pypi`. Availability of the name must be resolved in PyPI; the repository does not reserve it.
+
+Use [PyPI's trusted-publisher setup](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/). No long-lived API token is needed.
+
+## Release procedure
+
+1. Update the version in `pyproject.toml`, refresh `uv.lock`, and update release notes. Use a new version for changed code; do not move an existing release tag.
+2. Run `uv sync --locked --extra dev --extra neural`, `POCKETFORGE_NEURAL_TEST=1 uv run --extra neural pytest -q`, and `uv build`. Review the changes and push. Wait for all CI jobs on that exact commit.
+3. Create and push a matching `vVERSION` tag on the tested commit. The tag must contain `release.yml`; the existing v0.1.0a2 tag predates it.
+4. Dispatch **Publish to PyPI** using that tag: `gh workflow run release.yml --ref vVERSION`.
+5. The workflow rejects branch/version mismatches, runs core and neural CI, builds and validates distributions, then waits for any configured environment approval. It downloads those built artifacts into a separate publishing job using PyPI OIDC.
+6. Confirm the workflow and PyPI file listing succeeded. Test installation of the exact version in a fresh environment before announcing availability. Attach the matching artifacts and release notes to a GitHub release.
+
+Authentication failures require correcting the account publisher/environment settings. Never mark publication complete from a successful build alone.

@@ -75,3 +75,5 @@ Frozen mode trains a classifier over embeddings. Fine-tuned mode updates the enc
 - `pocketforge evaluate RUN --task TASK --predictions predictions.jsonl` compares your current system without changing model selection.
 
 Install from this repository or GitHub release artifacts. No PyPI release is currently available; package-name availability is not a reservation or trademark clearance.
+
+Maintainers: [publishing procedure](docs/PUBLISHING.md) and [independent trial evidence](docs/TRIAL_RESULTS.md).

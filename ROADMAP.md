@@ -50,7 +50,7 @@ pocketforge predict runs/<run-id> --text "I need help with my invoice"
 1. Inspect the available Python environment and compute hardware; record a CPU-first development path. Identify an optional GPU path without provisioning paid resources.
 2. Create the package skeleton, development configuration, and minimal CI plan.
 3. Specify dataset fields, label rules, missing/extra-content handling, input limits, grouping, split policy, and metric definitions before implementation.
-4. Audit a candidate public dataset's license, provenance, and redistribution terms. Keep public examples separate from private user data and all Handshake task materials.
+4. Audit a candidate public dataset's license, provenance, and redistribution terms. Keep public examples separate from private user data and unrelated task materials.
 5. Implement validation and the majority-class baseline, then TF-IDF plus a linear classifier.
 6. Add meaningful tests for leakage detection, invalid labels, metric correctness, and save/load prediction equivalence.
 7. Produce the first report, with a small hand-checked fixture for metric verification and a larger legitimate dataset for performance measurement.
@@ -126,8 +126,20 @@ These sources were reviewed during the September 29 planning conversation. Reche
 | 3 — pretrained training | Pinned MiniLM frozen mode and optional encoder fine-tuning implemented; offline reload integration tested; full BANKING77 experiments recorded. |
 | 4 — usable preview | Readable HTML, external prediction imports, warm timing, cost worksheet, walkthrough, and examples implemented. Independent usability unvalidated. |
 | 5 — reliability and trials | Edge cases tested; two further tasks work without core changes. Trial kit prepared at user's request; no trial results collected. |
-| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, and CI configured. GitHub alpha publication follows exact-head CI; PyPI remains pending. |
+| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, and CI configured. GitHub v0.1.0a2 published after passing CI; PyPI remains pending owner setup. |
 
 Measured BANKING77 accuracy: TF-IDF 87.56%, frozen MiniLM 90.19%, one-epoch adapted MiniLM 87.20% on our modified split. The adaptation regression is retained and disclosed. See benchmarks/BANKING77.md and benchmarks/results for the protocol and evidence.
 
 No autonomous outreach or background monitoring is scheduled. Next external work: share docs/TRIAL_KIT.md with consenting developers and collect usage evidence. Next product work should follow their failures and priorities rather than add features merely to fill a calendar.
+
+## Next delivery pipeline
+
+- [x] Remove unrelated organization references from project documentation.
+- [x] Exercise installed wheel and source distribution across all three examples in CI, including invalid input and overwrite refusal.
+- [x] Add manually dispatched, version-tag-checked PyPI trusted publishing after core/neural CI and distribution validation. See docs/PUBLISHING.md.
+- [x] Add a trial evidence ledger and explicit outcome definitions in docs/TRIAL_RESULTS.md.
+- [ ] Owner configures PyPI trusted publisher and GitHub environment; release a new tagged version using docs/PUBLISHING.md.
+- [ ] Collect five independent trials, three integrations, and two repeat uses; prioritize reliability fixes from recorded failures.
+- [ ] Complete representative current-system and commercial competitor comparisons with authorized data/access.
+
+These implementation checkmarks do not claim external validation or successful PyPI publication. No outreach has been performed.

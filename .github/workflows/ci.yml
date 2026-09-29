@@ -1,5 +1,5 @@
 name: CI
-on: [push, pull_request]
+on: [push, pull_request, workflow_call]
 permissions:
   contents: read
 jobs:
@@ -16,12 +16,16 @@ jobs:
       - run: uv sync --locked --extra dev
       - run: uv run pytest -q
       - run: uv build
-      - name: Exercise packaged CLI
+      - name: Exercise installed wheel across all examples
         run: |
-          uv run --isolated --no-project --with ./dist/pocketforge-0.1.0a2-py3-none-any.whl pocketforge train examples/support/task.yaml --output runs/ci
-          uv run pocketforge evaluate runs/ci --task examples/support/task.yaml
-          uv run pocketforge predict runs/ci --text 'Cancel my subscription'
-          uv run pocketforge benchmark runs/ci --task examples/support/task.yaml --repeats 3
+          uv venv /tmp/pocketforge-wheel
+          uv pip install --python /tmp/pocketforge-wheel/bin/python dist/*.whl
+          /tmp/pocketforge-wheel/bin/python scripts/smoke_package.py
+      - name: Exercise installed source distribution
+        run: |
+          uv venv /tmp/pocketforge-sdist
+          uv pip install --python /tmp/pocketforge-sdist/bin/python dist/*.tar.gz
+          /tmp/pocketforge-sdist/bin/python scripts/smoke_package.py
 
   neural:
     runs-on: macos-latest

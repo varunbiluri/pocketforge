@@ -34,3 +34,5 @@ Neural installation, model downloads, and training may take substantially longer
 Success means the developer can complete the workflow using the docs and can make a justified decision about model suitability. A correct conclusion that the baseline or existing system is better is still a useful result. Track completed trials, integrations, and second uses separately. Suggested targets: five trials, three integrations, two repeat uses. These are targets, not observed metrics.
 
 The maintainer can share this kit directly. The assistant has not contacted anyone or scheduled outreach. Obtain consent before publishing attributed feedback or using contributed data.
+
+Record consented aggregate outcomes using [the trial evidence ledger](TRIAL_RESULTS.md).
