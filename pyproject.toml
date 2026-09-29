@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pocketforge"
-version = "0.1.0a1"
+version = "0.1.0a2"
 description = "Build and evaluate local text classifiers from labeled examples."
 readme = "README.md"
 license = "MIT"
@@ -13,6 +13,9 @@ dependencies = ["scikit-learn>=1.5,<2", "PyYAML>=6,<7", "joblib>=1.4,<2"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "build>=1,<2"]
+neural = [
+    "sentence-transformers>=3,<6",
+]
 
 [project.scripts]
 pocketforge = "pocketforge.cli:main"

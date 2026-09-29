@@ -1,0 +1,12 @@
+{
+  "currency": "INR",
+  "monthly_requests": 1000000,
+  "current_cost_per_1000": 200,
+  "hosting_monthly": 40000,
+  "maintenance_monthly": 30000,
+  "training_one_time": 60000,
+  "amortization_months": 3,
+  "retraining_monthly": 0,
+  "fallback_fraction": 0.05,
+  "fallback_cost_per_1000": 200
+}

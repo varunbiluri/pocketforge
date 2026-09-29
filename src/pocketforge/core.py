@@ -2,7 +2,6 @@
 
 import csv
 import hashlib
-import html
 import io
 import json
 import platform
@@ -113,7 +112,9 @@ def score(labels, truth, predictions):
     }
 
 
-def train(task, output):
+def train(task, output, *, neural=False, epochs=0):
+    if not isinstance(epochs, int) or epochs < 0 or (epochs and not neural):
+        raise ContractError("epochs must be nonnegative and requires neural=True when positive.")
     config, data, hashes = load_task(task)
     output = Path(output).resolve()
     if output.exists():
@@ -129,9 +130,15 @@ def train(task, output):
             LogisticRegression(max_iter=1000, random_state=0),
         ),
     }
+    if neural:
+        from .neural import MiniLMClassifier
+        models["minilm"] = MiniLMClassifier(epochs=epochs)
     results = {}
     for name, model in models.items():
-        model.fit(x, y)
+        if name == "minilm":
+            model.fit(x, y, validation=(vx, vy))
+        else:
+            model.fit(x, y)
         results[name] = score(config["labels"], vy, model.predict(vx).tolist())
     # Stable tie: prefer the simpler majority classifier.
     winner = max(models, key=lambda name: results[name]["macro_f1"])
@@ -142,14 +149,27 @@ def train(task, output):
         "validation": results,
         "versions": {name: version(name) for name in ["pocketforge", "scikit-learn", "numpy", "joblib", "PyYAML"]},
         "python": platform.python_version(), "platform": platform.platform(), "seed": 0,
+        "recipe": {"tfidf": {"analyzer": "char", "ngram_range": [1, 5], "max_features": 50000},
+                   "logistic": {"C": 1.0, "max_iter": 1000, "random_state": 0},
+                   "majority": "most_frequent"},
     }
+    if neural:
+        from .neural import MODEL, REVISION
+        manifest["neural"] = {"model": MODEL, "revision": REVISION, "license": "Apache-2.0",
+                              "epochs": epochs, "selected_epoch": models["minilm"].selected_epoch,
+                              "history": models["minilm"].history, "max_tokens": 256,
+                              "device": "cpu", "threads": 4, "batch_size": 32, "learning_rate": 2e-5}
+        manifest["versions"].update({n: version(n) for n in ["sentence-transformers", "torch", "transformers"]})
     output.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=".pocketforge-", dir=output.parent))
     try:
         for name, model in models.items():
             artifact = staging / f"{name}.joblib"
-            joblib.dump(model, artifact)
-        manifest["model_sha256"] = {name: digest((staging / f"{name}.joblib").read_bytes()) for name in models}
+            if name == "minilm":
+                model.save(staging / name)
+            else:
+                joblib.dump(model, artifact)
+        manifest["model_sha256"] = {name: artifact_digest(staging, name) for name in models}
         write_json(staging / "manifest.json", manifest)
         staging.rename(output)
     finally:
@@ -164,15 +184,33 @@ def load_model(run, name=None):
     if manifest.get("format_version") != 1:
         raise ContractError("Unsupported artifact format.")
     name = name or manifest["selected_model"]
-    if name not in {"majority", "tfidf_linear"}:
+    if name not in {"majority", "tfidf_linear", "minilm"}:
         raise ContractError("Unknown model name.")
     artifact = run / f"{name}.joblib"
-    if digest(artifact.read_bytes()) != manifest["model_sha256"][name]:
+    if artifact_digest(run, name) != manifest["model_sha256"][name]:
         raise ContractError("Model checksum mismatch.")
     if manifest["versions"]["scikit-learn"] != version("scikit-learn"):
         raise ContractError("Use the scikit-learn version recorded in manifest.json.")
     # joblib is executable serialization: only load artifacts from trusted sources.
+    if name == "minilm":
+        from .neural import MiniLMClassifier
+        for dependency in ["sentence-transformers", "torch", "transformers"]:
+            if version(dependency) != manifest["versions"][dependency]:
+                raise ContractError(f"Use the recorded {dependency} version.")
+        return MiniLMClassifier.load(run / name), manifest
     return joblib.load(artifact), manifest
+
+
+def artifact_files(run, name):
+    root = Path(run)
+    return sorted((root / name).rglob("*")) if name == "minilm" else [root / f"{name}.joblib"]
+
+
+def artifact_digest(run, name):
+    if name != "minilm":
+        return digest((Path(run) / f"{name}.joblib").read_bytes())
+    entries = [(str(p.relative_to(run)), digest(p.read_bytes())) for p in artifact_files(run, name) if p.is_file()]
+    return digest(json.dumps(entries).encode())
 
 
 def predict(run, text):
@@ -182,7 +220,7 @@ def predict(run, text):
     return str(model.predict([text])[0])
 
 
-def evaluate(run, task):
+def evaluate(run, task, *, predictions=None):
     config, data, hashes = load_task(task)
     _, manifest = load_model(run)
     if config != manifest["task"] or hashes != manifest["dataset_sha256"]:
@@ -191,15 +229,16 @@ def evaluate(run, task):
     results = {}
     for name in manifest["validation"]:
         model, _ = load_model(run, name)
-        predictions = model.predict([row["text"] for row in rows]).tolist()
-        results[name] = score(config["labels"], [row["label"] for row in rows], predictions)
-        results[name]["predictions"] = predictions
+        predicted = model.predict([row["text"] for row in rows]).tolist()
+        results[name] = score(config["labels"], [row["label"] for row in rows], predicted)
+        results[name]["predictions"] = predicted
+    if predictions is not None:
+        from .reports import external_predictions
+        external = external_predictions(predictions, rows, config["labels"])
+        results["current_system"] = score(config["labels"], [row["label"] for row in rows], external)
+        results["current_system"]["predictions"] = external
     report = {"split": "test", "selected_on_validation": manifest["selected_model"], "results": results}
     write_json(Path(run) / "report.json", report)
-    rendered = html.escape(json.dumps(report, indent=2, ensure_ascii=False))
-    (Path(run) / "report.html").write_text(
-        '<!doctype html><html lang="en"><meta charset="utf-8"><title>PocketForge evaluation</title>'
-        '<style>body{max-width:960px;margin:40px auto;padding:20px;font:16px system-ui}pre{white-space:pre-wrap;background:#f3f5f7;padding:24px}</style>'
-        '<h1>PocketForge evaluation</h1><p>Held-out test results. Model selection used validation data only. '
-        'These results do not guarantee future performance.</p><pre>' + rendered + '</pre></html>', encoding="utf-8")
+    from .reports import render_report
+    render_report(Path(run) / "report.html", report)
     return report

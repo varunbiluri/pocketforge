@@ -16,9 +16,12 @@ def main():
     training = commands.add_parser("train")
     training.add_argument("task")
     training.add_argument("--output", required=True)
+    training.add_argument("--neural", action="store_true")
+    training.add_argument("--epochs", type=int, default=0)
     evaluation = commands.add_parser("evaluate")
     evaluation.add_argument("run")
     evaluation.add_argument("--task", required=True)
+    evaluation.add_argument("--predictions")
     prediction = commands.add_parser("predict")
     prediction.add_argument("run")
     prediction.add_argument("--text", required=True)
@@ -28,22 +31,27 @@ def main():
     timing.add_argument("--batch-size", type=int, default=1)
     timing.add_argument("--repeats", type=int, default=20)
     timing.add_argument("--warmup", type=int, default=3)
+    cost = commands.add_parser("cost")
+    cost.add_argument("scenario")
     args = parser.parse_args()
     try:
         if args.command == "validate":
             _, data, hashes = load_task(args.task)
             result = {"counts": {key: len(rows) for key, rows in data.items()}, "sha256": hashes}
         elif args.command == "train":
-            result = train(args.task, args.output)
+            result = train(args.task, args.output, neural=args.neural, epochs=args.epochs)
         elif args.command == "evaluate":
-            result = evaluate(args.run, args.task)
+            result = evaluate(args.run, args.task, predictions=args.predictions)
         elif args.command == "benchmark":
             result = benchmark(args.run, args.task, batch_size=args.batch_size,
                                repeats=args.repeats, warmup=args.warmup)
+        elif args.command == "cost":
+            from .reports import costs
+            result = costs(args.scenario)
         else:
             result = {"label": predict(args.run, args.text)}
         print(json.dumps(result, indent=2, ensure_ascii=False))
-    except (ContractError, OSError, ValueError, yaml.YAMLError) as error:
+    except (ContractError, OSError, ValueError, ImportError, yaml.YAMLError) as error:
         print(f"pocketforge: {error}", file=sys.stderr)
         return 2
     return 0

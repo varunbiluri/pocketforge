@@ -1,7 +1,7 @@
 # PocketForge — roadmap to an open-source alpha
 
-Created: September 29, 2026. Status: first CPU baseline milestone implemented locally.
-Working name only: package, domain, and trademark availability remain unchecked.
+Created: September 29, 2026. Status: alpha engineering delivered; independent adoption and registry publication pending.
+Public repository: varunbiluri/pocketforge. PyPI returned 404 for this name during the September 29 check; that is not a reservation. Domain and trademark clearance remain unverified.
 
 ## Product and audience
 
@@ -25,12 +25,12 @@ The six-week objective is a useful public alpha, not a general training platform
 
 Defer generative agents, arbitrary JSON extraction, automated synthetic-data creation, multiple training backends, hosted infrastructure, billing, and a model marketplace. These are future options, not alpha commitments.
 
-Proposed CLI shape (design sketch, not implemented):
+Core CLI (implemented):
 
 ```text
 pocketforge validate task.yaml
-pocketforge train task.yaml
-pocketforge evaluate runs/<run-id>
+pocketforge train task.yaml --output runs/example
+pocketforge evaluate runs/<run-id> --task task.yaml
 pocketforge predict runs/<run-id> --text "I need help with my invoice"
 ```
 
@@ -83,17 +83,21 @@ Suggested adoption targets, not forecasts: five independent trials, three comple
 
 ## Release checklist
 
-- [ ] Dataset schema, acceptance behavior, and limitations documented.
-- [ ] Tests, build, and clean-install workflow pass for the release revision.
-- [ ] Baseline and small-model runs have complete manifests and reproducible reports.
-- [ ] Exported models reproduce evaluated predictions within the documented nondeterminism policy.
-- [ ] Examples use data and models with compatible, recorded licenses.
-- [ ] No credentials, private datasets, Handshake artifacts, or unrelated scratch outputs included.
-- [ ] Code licensing finalized; model and dataset licenses remain separately disclosed.
-- [ ] Project/package name availability checked before publishing.
-- [ ] README and demo contain only supported claims and measured results.
-- [ ] Contribution instructions, issue templates, and supported-environment policy ready.
-- [ ] Public repository and package publication explicitly included in the launch request.
+- [x] Dataset schema, acceptance behavior, and limitations documented.
+- [x] Local tests, build, and clean-install workflow verified; exact-head CI is required before the GitHub release.
+- [x] Baseline and pretrained-model runs have manifests and reports; one neural run per configuration, no training-variance claim.
+- [x] Offline neural reload preserves evaluated validation predictions in the integration test.
+- [x] Examples have recorded provenance and licenses; model notices included in new exports.
+- [x] Private data, downloaded datasets, model weights, and scratch outputs excluded from source commits.
+- [x] MIT code license and separate dataset/model terms documented.
+- [x] GitHub name available and created; PyPI name checked, not reserved.
+- [x] Documentation includes measured gains, regressions, and limitations.
+- [x] Contribution guide, issue templates, support policy, and trial kit ready.
+- [ ] Independent developer trials, integrations, and retention targets achieved — no testers yet.
+- [ ] Commercial competitor usability trials completed — access/participants unavailable.
+- [ ] PyPI publication — publisher credentials or trusted-publishing setup not configured.
+
+The public alpha can be distributed through GitHub artifacts without claiming these external validation items are complete. Package registry publication and independent user outcomes must not be inferred from implementation or stars.
 
 ## Responsibilities and resource assumptions
 
@@ -115,8 +119,15 @@ These sources were reviewed during the September 29 planning conversation. Reche
 
 ## Current status
 
-- Complete: roadmap; Python package and locked environment; CSV/JSONL contract; duplicate/group validation; majority and TF-IDF baselines; validation-only selection; saved-model prediction; held-out JSON/HTML reports; original toy fixture and usage documentation.
-- Verified locally: 12 tests pass; CLI workflow and clean-wheel prediction succeed. Repeated demo runs yield byte-identical artifacts. A pinned, attributed BANKING77 preparation is reproducible; one CPU benchmark run yields 87.56% test accuracy under the explicitly modified protocol in benchmarks/BANKING77.md.
-- Implemented after initial milestone: warm local inference benchmark CLI, model-size reporting, MIT code license, contribution guide, and GitHub CI configuration for Python 3.11/3.12. Public repository: https://github.com/varunbiluri/pocketforge . Package registry release remains pending.
-- Pending: direct competitor experiment, pretrained-model training, cost reports, current-system prediction imports, user trials, and package publication. GitHub Actions results must be checked per revision; configuration alone is not a passing CI result.
-- Next: compare a pretrained encoder on the frozen benchmark and measure workflow differences against existing tools. Public benchmark results do not establish customer demand or production performance.
+| Milestone | Evidence/status |
+| --- | --- |
+| 1 — baseline and problem definition | Pinned BANKING77 data and CPU report; independent plain scikit-learn comparison matches all predictions. Commercial differentiation remains a hypothesis. |
+| 2 — complete local workflow | Validator, training, reload, Python/CLI prediction, manifests, and held-out reports implemented. |
+| 3 — pretrained training | Pinned MiniLM frozen mode and optional encoder fine-tuning implemented; offline reload integration tested; full BANKING77 experiments recorded. |
+| 4 — usable preview | Readable HTML, external prediction imports, warm timing, cost worksheet, walkthrough, and examples implemented. Independent usability unvalidated. |
+| 5 — reliability and trials | Edge cases tested; two further tasks work without core changes. Trial kit prepared at user's request; no trial results collected. |
+| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, and CI configured. GitHub alpha publication follows exact-head CI; PyPI remains pending. |
+
+Measured BANKING77 accuracy: TF-IDF 87.56%, frozen MiniLM 90.19%, one-epoch adapted MiniLM 87.20% on our modified split. The adaptation regression is retained and disclosed. See benchmarks/BANKING77.md and benchmarks/results for the protocol and evidence.
+
+No autonomous outreach or background monitoring is scheduled. Next external work: share docs/TRIAL_KIT.md with consenting developers and collect usage evidence. Next product work should follow their failures and priorities rather than add features merely to fill a calendar.

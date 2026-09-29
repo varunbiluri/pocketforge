@@ -1,0 +1,8 @@
+{"text": "What is the weather today", "label": "weather"}
+{"text": "Will it rain tomorrow", "label": "weather"}
+{"text": "Show the local temperature", "label": "weather"}
+{"text": "Is snow expected this week", "label": "weather"}
+{"text": "Set a timer for ten minutes", "label": "timer"}
+{"text": "Start a countdown for my tea", "label": "timer"}
+{"text": "Remind me when five minutes pass", "label": "timer"}
+{"text": "Begin a twenty minute timer", "label": "timer"}

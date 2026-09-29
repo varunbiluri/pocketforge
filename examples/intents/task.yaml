@@ -1,0 +1,8 @@
+name: intents-demo
+labels:
+- weather
+- timer
+splits:
+  train: train.jsonl
+  validation: validation.jsonl
+  test: test.jsonl

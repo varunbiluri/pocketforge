@@ -42,3 +42,19 @@ Environment: macOS 26.2, ARM64, Python 3.12.12, scikit-learn 1.9.1, NumPy 2.5.3.
 - The original small demo also produced identical manifests, model files, and reports in two local runs. Full BANKING77 training was run once; no repeated-training variability claim is made here.
 
 Next: compare a pretrained text encoder using this frozen protocol and measure latency/resource tradeoffs. A strong existing baseline is evidence that the workflow works, not yet evidence that PocketForge is differentiated.
+
+## Pretrained-model experiments (September 29, 2026)
+
+The same prepared partitions and fixed hyperparameters were used, without test-set tuning. Each neural configuration was trained once. Full manifest, per-class metrics, and timing samples are recorded under `benchmarks/results/`.
+
+| Candidate | Test accuracy | Test macro-F1 | Warm median, ms/item | Model bytes |
+| --- | ---: | ---: | ---: | ---: |
+| TF-IDF + logistic regression (frozen-model comparison run) | 87.56% | 87.42% | 0.262 | 29,458,452 |
+| Frozen MiniLM + logistic regression | 90.19% | 90.19% | 4.223 | 91,722,923 |
+| MiniLM, one encoder fine-tuning epoch + logistic regression | 87.20% | 87.18% | 4.058 | 91,722,923 |
+
+Timing: 100 sequential batch-size-one calls, three warmup batches, first 100 test rows, CPU, macOS ARM64. Preprocessing is included; model loading, disk checksum verification, and network are excluded. Shared-host activity can affect timings. Model byte totals exclude notices added during release preparation. These timings are not representative workload capacity estimates.
+
+The one-epoch adaptation worsened test results relative to frozen MiniLM. This is disclosed rather than retuned against the test set. More training is not automatically better. To reproduce, add `--neural` to training for frozen embeddings, or `--neural --epochs 1` for adaptation; use a fresh output directory and the matching neural dependencies. The public model may have prior exposure to similar data; these results do not prove generalization to private workloads.
+
+An independent plain scikit-learn script reproduced every TF-IDF prediction on this split. Run `uv run python scripts/compare_sklearn.py data/banking77/task.yaml --report runs/banking77/report.json` to check. This confirms algorithm parity, not superior developer experience.

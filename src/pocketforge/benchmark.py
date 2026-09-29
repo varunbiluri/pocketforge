@@ -5,7 +5,7 @@ import statistics
 import time
 from pathlib import Path
 
-from .core import ContractError, load_model, load_task, write_json
+from .core import ContractError, artifact_files, load_model, load_task, write_json
 
 
 def benchmark(run, task, *, batch_size=1, repeats=20, warmup=3):
@@ -38,7 +38,7 @@ def benchmark(run, task, *, batch_size=1, repeats=20, warmup=3):
             "batch_latency_ms_median": statistics.median(elapsed),
             "batch_latency_ms_p95": ordered[math.ceil(0.95 * len(ordered)) - 1],
             "throughput_items_per_second": repeats * batch_size / (sum(elapsed) / 1000),
-            "model_file_bytes": (Path(run) / f"{name}.joblib").stat().st_size,
+            "model_file_bytes": sum(p.stat().st_size for p in artifact_files(run, name) if p.is_file()),
             "batch_latency_ms_samples": elapsed,
         }
     report = {

@@ -9,8 +9,8 @@ jobs:
       matrix:
         python: ['3.11', '3.12']
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: ${{ matrix.python }}
       - run: uv sync --locked --extra dev
@@ -18,7 +18,19 @@ jobs:
       - run: uv build
       - name: Exercise packaged CLI
         run: |
-          uv run --isolated --no-project --with ./dist/pocketforge-0.1.0a1-py3-none-any.whl pocketforge train examples/support/task.yaml --output runs/ci
+          uv run --isolated --no-project --with ./dist/pocketforge-0.1.0a2-py3-none-any.whl pocketforge train examples/support/task.yaml --output runs/ci
           uv run pocketforge evaluate runs/ci --task examples/support/task.yaml
           uv run pocketforge predict runs/ci --text 'Cancel my subscription'
           uv run pocketforge benchmark runs/ci --task examples/support/task.yaml --repeats 3
+
+  neural:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: '3.12'
+      - run: uv sync --locked --extra dev --extra neural
+      - run: uv run --extra neural pytest tests/test_neural.py -q
+        env:
+          POCKETFORGE_NEURAL_TEST: '1'

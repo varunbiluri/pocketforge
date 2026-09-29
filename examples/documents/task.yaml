@@ -1,0 +1,8 @@
+name: documents-demo
+labels:
+- invoice
+- resume
+splits:
+  train: train.jsonl
+  validation: validation.jsonl
+  test: test.jsonl

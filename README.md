@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/varunbiluri/pocketforge/actions/workflows/ci.yml/badge.svg)](https://github.com/varunbiluri/pocketforge/actions/workflows/ci.yml)
 
-An early local CLI for validating labeled text data, comparing CPU classifiers, and exporting a tested model. This is the first roadmap milestone, not the complete small-model training product. The project name and package name are provisional. Code is MIT licensed; datasets retain their separately stated licenses.
+A local toolkit for validating labeled text data, comparing simple classifiers with optional pretrained MiniLM models, and exporting a tested model. Public alpha: fixed-label English text classification, with no claim of production readiness. Code is MIT licensed; datasets retain their separately stated licenses.
 
 ## Run locally
 
@@ -45,10 +45,33 @@ Validation and test may omit a class; reports explicitly list absent reference l
 - Model persistence, a Python prediction function, and JSON/HTML reports.
 - Local inference benchmarks: median/p95 batch latency, throughput, model size, and raw timing samples in `benchmark.json`. Timing includes preprocessing but excludes model loading and network transport. Batch size, warmup, repetitions, and environment are recorded; these are local measurements rather than production capacity estimates.
 
-The included original 24-message fixture tests the workflow only. Its scores are not evidence of real-world model quality or commercial savings. A pinned public-data preparation script and a measured [BANKING77 CPU baseline](benchmarks/BANKING77.md) are also available. Pretrained-model fine-tuning, current-system comparison imports, latency/cost reports, and independent trials remain on the [roadmap](ROADMAP.md).
+The included original 24-message fixture tests the workflow only. Its scores are not evidence of real-world model quality or commercial savings. A pinned public-data preparation script and a measured [BANKING77 CPU baseline](benchmarks/BANKING77.md) are also available. Optional MiniLM training, current-system prediction imports, inference benchmarks, and cost scenarios are implemented. Independent trials and broader product comparisons remain on the [roadmap](ROADMAP.md).
 
 ## Artifacts and reproducibility
 
 Evaluation requires the same task and byte-identical datasets used at training time. It records test predictions without exporting source text. The manifest includes label order, versions, platform, and fixed random seed. Model files are checksummed, and loading requires the recorded scikit-learn version. Use the lockfile and recorded environment when reproducing a run; cross-platform numerical identity is not guaranteed.
 
 Only load run directories you trust. Joblib model files can execute code; checksums detect accidental corruption but do not authenticate an untrusted author. Text features in trained models may reveal parts of training data, so model exports must receive the same privacy review as other derived data. The workflow makes no network inference calls.
+
+## Optional pretrained models
+
+```bash
+uv sync --locked --extra dev --extra neural
+uv run --extra neural pocketforge train examples/support/task.yaml --output runs/neural --neural
+# Optional encoder fine-tuning (CPU; can take longer):
+uv run --extra neural pocketforge train examples/support/task.yaml --output runs/finetuned --neural --epochs 1
+uv run --extra neural pocketforge evaluate runs/finetuned --task examples/support/task.yaml
+```
+
+Frozen mode trains a classifier over embeddings. Fine-tuned mode updates the encoder before fitting its classifier. Both compare against simpler baselines on validation data. A pinned public model downloads on first use; exported models reload offline. MiniLM truncates at 256 wordpieces. Read the [walkthrough](docs/WALKTHROUGH.md) for checkpoint selection, deployment, external prediction schema, and cost assumptions.
+
+## Try your own workflow
+
+- [Developer trial kit](docs/TRIAL_KIT.md): quick start and feedback questions.
+- [Supported environments](docs/SUPPORT.md) and [third-party notices](docs/THIRD_PARTY.md).
+- [Alternative tools](docs/COMPETITORS.md): existing capabilities and unvalidated differentiation.
+- Additional original fixtures: `examples/documents/task.yaml` and `examples/intents/task.yaml`.
+- `pocketforge cost examples/costs.json` calculates a hypothetical scenario, not promised savings.
+- `pocketforge evaluate RUN --task TASK --predictions predictions.jsonl` compares your current system without changing model selection.
+
+Install from this repository or GitHub release artifacts. No PyPI release is currently available; package-name availability is not a reservation or trademark clearance.

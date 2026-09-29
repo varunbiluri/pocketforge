@@ -104,3 +104,28 @@ def test_csv_and_missing_class(task):
     task.write_text(yaml.safe_dump(config))
     with pytest.raises(ContractError, match="Every declared label"):
         load_task(task)
+
+
+@pytest.mark.parametrize('example', ['documents', 'intents'])
+def test_additional_task_without_core_changes(tmp_path, example):
+    task = Path(__file__).parents[1] / 'examples' / example / 'task.yaml'
+    run = tmp_path / example
+    train(task, run)
+    assert evaluate(run, task)['split'] == 'test'
+
+
+def test_limits_versions_and_missing_support(task, tmp_path):
+    run = tmp_path / 'run'
+    train(task, run)
+    with pytest.raises(ContractError, match='text'):
+        predict(run, 'x' * 10001)
+    manifest_path = run / 'manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['versions']['scikit-learn'] = '0.invalid'
+    manifest_path.write_text(json.dumps(manifest))
+    with pytest.raises(ContractError, match='version'):
+        predict(run, 'message')
+    result = score(['a', 'b'], ['a'] * 10, ['a'] * 10)
+    assert result['accuracy'] == 1
+    assert result['macro_f1'] == 0.5
+    assert result['absent_reference_labels'] == ['b']
