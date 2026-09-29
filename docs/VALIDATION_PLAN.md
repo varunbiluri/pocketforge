@@ -13,7 +13,7 @@ Ask testers to install the current PyPI alpha and open a GitHub issue using the 
 Share this install command:
 
 ```bash
-python -m pip install pocketforge==0.1.0a4
+python -m pip install pocketforge==0.1.0a5
 ```
 
 Send testers to [TRIAL_KIT.md](TRIAL_KIT.md) for the thirty-minute workflow. Record only aggregate or synthetic reproductions in public issues.
@@ -40,7 +40,7 @@ Do not count stars, downloads, issue reactions, internal examples, BANKING77 exp
 
 | Item | Status | Evidence |
 | --- | --- | --- |
-| Public PyPI install | Complete | `pocketforge==0.1.0a4` verified from the public PyPI index with fresh pip and uv installs. |
+| Public PyPI install | Complete | `pocketforge==0.1.0a5` verified from the public PyPI index with fresh pip and uv installs. |
 | Public feedback intake | Complete | GitHub issue template and this plan. |
 | Completed independent trials | 0 / 5 | No consenting developer reports yet. |
 | Integrations | 0 / 3 | No external integration evidence yet. |
@@ -53,7 +53,7 @@ Do not count stars, downloads, issue reactions, internal examples, BANKING77 exp
 Use only channels and contacts where outreach is welcome. Do not send private data. A useful request is short:
 
 ```text
-PocketForge is a local Python alpha for fixed-label text classification. Could you try the 30-minute workflow on a non-sensitive task or the synthetic support example and open a GitHub trial-feedback issue with aggregate results? Install: python -m pip install pocketforge==0.1.0a4
+PocketForge is a local Python alpha for fixed-label text classification. Could you try the 30-minute workflow on a non-sensitive task or the synthetic support example and open a GitHub trial-feedback issue with aggregate results? Install: python -m pip install pocketforge==0.1.0a5
 ```
 
 The maintainer or a delegated assistant can post a public GitHub issue inviting trials. Direct messages, email, Slack, or forum posts require appropriate account access and permission from the account owner.

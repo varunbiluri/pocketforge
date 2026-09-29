@@ -8,8 +8,19 @@ Use Python 3.11 or 3.12 for this alpha. If your `python3` is newer or its virtua
 
 ```bash
 uv venv --python 3.12 .venv
-uv pip install --python .venv/bin/python pocketforge==0.1.0a4
+uv pip install --python .venv/bin/python pocketforge==0.1.0a5
 .venv/bin/python -m pocketforge.cli --help
+```
+
+`uv` can print warnings while it skips old dependency files published by upstream packages. Treat those as harmless when the install exits successfully and shows `pocketforge==0.1.0a5` in the installed package list.
+
+For the fastest first run, generate a valid starter task:
+
+```bash
+.venv/bin/python -m pocketforge.cli init starter-intents
+.venv/bin/python -m pocketforge.cli validate starter-intents/task.yaml
+.venv/bin/python -m pocketforge.cli train starter-intents/task.yaml --output runs/starter-intents
+.venv/bin/python -m pocketforge.cli evaluate runs/starter-intents --task starter-intents/task.yaml
 ```
 
 ## Your own task

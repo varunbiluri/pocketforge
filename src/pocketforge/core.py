@@ -36,11 +36,26 @@ def write_json(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def task_shape_error(config):
+    expected = "Expected task.yaml with exactly: name, labels, splits. Example: name: support-demo; labels: [billing, technical]; splits: {train: train.jsonl, validation: validation.jsonl, test: test.jsonl}. Run `pocketforge init PATH` to create a starter task."
+    if not isinstance(config, dict):
+        return f"Task file must be a YAML mapping. {expected}"
+    found = ", ".join(sorted(str(key) for key in config)) or "no keys"
+    missing = sorted({"name", "labels", "splits"} - set(config))
+    extra = sorted(set(config) - {"name", "labels", "splits"})
+    details = []
+    if missing:
+        details.append("missing " + ", ".join(missing))
+    if extra:
+        details.append("unexpected " + ", ".join(str(key) for key in extra))
+    return f"Task must contain exactly name, labels, and splits; found {found} ({'; '.join(details)}). {expected}"
+
+
 def load_task(path):
     path = Path(path).resolve()
     config = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(config, dict) or set(config) != {"name", "labels", "splits"}:
-        raise ContractError("Task must contain exactly name, labels, and splits.")
+        raise ContractError(task_shape_error(config))
     if not isinstance(config["name"], str) or not config["name"].strip():
         raise ContractError("name must be a nonempty string.")
     labels = config["labels"]

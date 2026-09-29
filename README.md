@@ -10,8 +10,18 @@ Requires Python 3.11 or 3.12 and uv. Python 3.13+ is not part of the supported a
 
 ```bash
 uv venv --python 3.12 .venv
-uv pip install --python .venv/bin/python pocketforge==0.1.0a4
+uv pip install --python .venv/bin/python pocketforge==0.1.0a5
 .venv/bin/python -m pocketforge.cli --help
+```
+
+`uv` can print warnings while scanning old dependency files from PyPI. If the command exits successfully and `pocketforge==0.1.0a5` appears in the installed package list, the install worked.
+
+Create a starter task without hand-writing YAML:
+
+```bash
+.venv/bin/python -m pocketforge.cli init starter-intents
+.venv/bin/python -m pocketforge.cli validate starter-intents/task.yaml
+.venv/bin/python -m pocketforge.cli train starter-intents/task.yaml --output runs/starter-intents
 ```
 
 From this repository checkout:
@@ -86,7 +96,7 @@ Frozen mode trains a classifier over embeddings. Fine-tuned mode updates the enc
 Install from PyPI or this repository:
 
 ```bash
-python -m pip install pocketforge==0.1.0a4
+python -m pip install pocketforge==0.1.0a5
 ```
 
 Domain and trademark clearance remain unverified.

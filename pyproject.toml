@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pocketforge"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "Build and evaluate local text classifiers from labeled examples."
 readme = "README.md"
 license = "MIT"

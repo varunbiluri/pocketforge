@@ -1,6 +1,7 @@
 import argparse
 import json
 import sys
+from pathlib import Path
 
 import yaml
 
@@ -8,9 +9,58 @@ from .core import ContractError, evaluate, load_task, predict, train
 from .benchmark import benchmark
 
 
+STARTER_TASK = """name: starter-intents
+labels:
+  - billing
+  - technical
+splits:
+  train: train.jsonl
+  validation: validation.jsonl
+  test: test.jsonl
+"""
+
+STARTER_SPLITS = {
+    "train.jsonl": [
+        {"text": "There is an unexpected charge on my invoice", "label": "billing", "group": "b1"},
+        {"text": "Please send a refund for the duplicate payment", "label": "billing", "group": "b2"},
+        {"text": "The app crashes when I upload a file", "label": "technical", "group": "t1"},
+        {"text": "I cannot sign in after resetting my password", "label": "technical", "group": "t2"},
+    ],
+    "validation.jsonl": [
+        {"text": "My card was charged twice", "label": "billing", "group": "bv1"},
+        {"text": "The dashboard shows an error page", "label": "technical", "group": "tv1"},
+    ],
+    "test.jsonl": [
+        {"text": "I need help with a wrong invoice", "label": "billing", "group": "bt1"},
+        {"text": "The export button is broken", "label": "technical", "group": "tt1"},
+    ],
+}
+
+
+def write_starter_task(destination):
+    destination = Path(destination)
+    if destination.exists() and any(destination.iterdir()):
+        raise ContractError("Destination already exists and is not empty; choose a new folder.")
+    destination.mkdir(parents=True, exist_ok=True)
+    (destination / "task.yaml").write_text(STARTER_TASK, encoding="utf-8")
+    for filename, rows in STARTER_SPLITS.items():
+        lines = [json.dumps(row, ensure_ascii=False) for row in rows]
+        (destination / filename).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return {
+        "created": str(destination),
+        "files": ["task.yaml", *STARTER_SPLITS],
+        "next": [
+            f"python -m pocketforge.cli validate {destination / 'task.yaml'}",
+            f"python -m pocketforge.cli train {destination / 'task.yaml'} --output runs/starter-intents",
+        ],
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description="Train and evaluate local text classifiers.")
     commands = parser.add_subparsers(dest="command", required=True)
+    init = commands.add_parser("init", help="create a starter task folder")
+    init.add_argument("destination")
     validate = commands.add_parser("validate")
     validate.add_argument("task")
     training = commands.add_parser("train")
@@ -35,7 +85,9 @@ def main():
     cost.add_argument("scenario")
     args = parser.parse_args()
     try:
-        if args.command == "validate":
+        if args.command == "init":
+            result = write_starter_task(args.destination)
+        elif args.command == "validate":
             _, data, hashes = load_task(args.task)
             result = {"counts": {key: len(rows) for key, rows in data.items()}, "sha256": hashes}
         elif args.command == "train":
