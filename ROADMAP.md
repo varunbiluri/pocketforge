@@ -139,7 +139,14 @@ No autonomous outreach or background monitoring is scheduled. Next external work
 - [x] Add manually dispatched, version-tag-checked PyPI trusted publishing after core/neural CI and distribution validation. See docs/PUBLISHING.md.
 - [x] Add a trial evidence ledger and explicit outcome definitions in docs/TRIAL_RESULTS.md.
 - [x] Owner configures PyPI trusted publisher; release a new tagged version using docs/PUBLISHING.md.
-- [ ] Collect five independent trials, three integrations, and two repeat uses; prioritize reliability fixes from recorded failures.
-- [ ] Complete representative current-system and commercial competitor comparisons with authorized data/access.
+- [ ] Collect five independent trials — [issue #3](https://github.com/varunbiluri/pocketforge/issues/3).
+- [ ] Complete three external integrations — [issue #4](https://github.com/varunbiluri/pocketforge/issues/4).
+- [ ] Record two repeat-use outcomes — [issue #5](https://github.com/varunbiluri/pocketforge/issues/5).
+- [ ] Complete representative current-system comparison with authorized data/access — [issue #6](https://github.com/varunbiluri/pocketforge/issues/6).
+- [ ] Complete commercial competitor usability comparisons — [issue #7](https://github.com/varunbiluri/pocketforge/issues/7).
+- [ ] Expand actionable CLI error coverage from trial failures — [issue #8](https://github.com/varunbiluri/pocketforge/issues/8).
+- [ ] Consider additional starter-task options for `pocketforge init` — [issue #9](https://github.com/varunbiluri/pocketforge/issues/9).
+- [ ] Evaluate a batch prediction command if trials confirm demand — [issue #10](https://github.com/varunbiluri/pocketforge/issues/10).
+- [ ] Prevent stale release-status docs after future releases — [issue #11](https://github.com/varunbiluri/pocketforge/issues/11).
 
 These implementation checkmarks do not claim external validation. No outreach has been performed.
