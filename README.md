@@ -74,6 +74,12 @@ Frozen mode trains a classifier over embeddings. Fine-tuned mode updates the enc
 - `pocketforge cost examples/costs.json` calculates a hypothetical scenario, not promised savings.
 - `pocketforge evaluate RUN --task TASK --predictions predictions.jsonl` compares your current system without changing model selection.
 
-Install from this repository or GitHub release artifacts. No PyPI release is currently available; package-name availability is not a reservation or trademark clearance.
+Install from PyPI or this repository:
+
+```bash
+python -m pip install pocketforge==0.1.0a3
+```
+
+Domain and trademark clearance remain unverified.
 
 Maintainers: [publishing procedure](docs/PUBLISHING.md) and [independent trial evidence](docs/TRIAL_RESULTS.md).

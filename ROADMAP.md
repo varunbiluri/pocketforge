@@ -1,7 +1,7 @@
 # PocketForge — roadmap to an open-source alpha
 
-Created: September 29, 2026. Status: alpha engineering delivered; independent adoption and registry publication pending.
-Public repository: varunbiluri/pocketforge. PyPI returned 404 for this name during the September 29 check; that is not a reservation. Domain and trademark clearance remain unverified.
+Created: September 29, 2026. Status: alpha engineering delivered; independent adoption pending.
+Public repository: varunbiluri/pocketforge. PyPI package: pocketforge 0.1.0a3. Domain and trademark clearance remain unverified.
 
 ## Product and audience
 
@@ -95,7 +95,7 @@ Suggested adoption targets, not forecasts: five independent trials, three comple
 - [x] Contribution guide, issue templates, support policy, and trial kit ready.
 - [ ] Independent developer trials, integrations, and retention targets achieved — no testers yet.
 - [ ] Commercial competitor usability trials completed — access/participants unavailable.
-- [ ] PyPI publication — publisher credentials or trusted-publishing setup not configured.
+- [x] PyPI publication — v0.1.0a3 published through trusted publishing.
 
 The public alpha can be distributed through GitHub artifacts without claiming these external validation items are complete. Package registry publication and independent user outcomes must not be inferred from implementation or stars.
 
@@ -126,7 +126,7 @@ These sources were reviewed during the September 29 planning conversation. Reche
 | 3 — pretrained training | Pinned MiniLM frozen mode and optional encoder fine-tuning implemented; offline reload integration tested; full BANKING77 experiments recorded. |
 | 4 — usable preview | Readable HTML, external prediction imports, warm timing, cost worksheet, walkthrough, and examples implemented. Independent usability unvalidated. |
 | 5 — reliability and trials | Edge cases tested; two further tasks work without core changes. Trial kit prepared at user's request; no trial results collected. |
-| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, and CI configured. GitHub v0.1.0a2 published after passing CI; PyPI release candidate v0.1.0a3 is being prepared for trusted publishing. |
+| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, CI, GitHub release assets, and PyPI v0.1.0a3 publication completed. |
 
 Measured BANKING77 accuracy: TF-IDF 87.56%, frozen MiniLM 90.19%, one-epoch adapted MiniLM 87.20% on our modified split. The adaptation regression is retained and disclosed. See benchmarks/BANKING77.md and benchmarks/results for the protocol and evidence.
 
@@ -138,8 +138,8 @@ No autonomous outreach or background monitoring is scheduled. Next external work
 - [x] Exercise installed wheel and source distribution across all three examples in CI, including invalid input and overwrite refusal.
 - [x] Add manually dispatched, version-tag-checked PyPI trusted publishing after core/neural CI and distribution validation. See docs/PUBLISHING.md.
 - [x] Add a trial evidence ledger and explicit outcome definitions in docs/TRIAL_RESULTS.md.
-- [ ] Owner configures PyPI trusted publisher; release a new tagged version using docs/PUBLISHING.md. GitHub environment setup is complete.
+- [x] Owner configures PyPI trusted publisher; release a new tagged version using docs/PUBLISHING.md.
 - [ ] Collect five independent trials, three integrations, and two repeat uses; prioritize reliability fixes from recorded failures.
 - [ ] Complete representative current-system and commercial competitor comparisons with authorized data/access.
 
-These implementation checkmarks do not claim external validation or successful PyPI publication. No outreach has been performed.
+These implementation checkmarks do not claim external validation. No outreach has been performed.

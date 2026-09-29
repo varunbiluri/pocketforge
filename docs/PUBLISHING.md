@@ -1,11 +1,11 @@
 # Package publishing
 
-GitHub alpha v0.1.0a2 is published. PyPI publication is pending account configuration and should use the next version tag. Pushing main runs CI; it does not publish a package.
+PyPI alpha v0.1.0a3 is published. Pushing main runs CI; it does not publish a package.
 
 ## One-time owner setup
 
-1. GitHub repository environment setup is complete: the `pypi` environment exists, requires review from `varunbiluri`, and has a custom `v*` deployment policy. The release workflow also rejects any ref that is not the exact `refs/tags/v{project.version}` tag.
-2. In your PyPI account, configure a pending trusted publisher for a new project (or an existing project's publisher): project `pocketforge`, owner `varunbiluri`, repository `pocketforge`, workflow `release.yml`, environment `pypi`. Availability of the name must be resolved in PyPI; the repository does not reserve it.
+1. GitHub repository environment setup is complete: the `pypi` environment exists, requires review from `varunbiluri`, and has a custom `v*` tag deployment policy. The release workflow also rejects any ref that is not the exact `refs/tags/v{project.version}` tag.
+2. PyPI trusted publishing is configured for project `pocketforge`, owner `varunbiluri`, repository `pocketforge`, workflow `release.yml`, environment `pypi`.
 
 Use [PyPI's trusted-publisher setup](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/). No long-lived API token is needed.
 

@@ -6,4 +6,4 @@ Three original synthetic tasks demonstrate usage. A pinned preparation script su
 
 Optional neural dependencies and a model download are required for MiniLM. Exported runs can reload offline. The core package is MIT licensed; datasets and base models retain their own terms. Trusted artifacts only: joblib loading executes code.
 
-Install the wheel from this GitHub release or clone the repository and use the lockfile. This alpha is not yet published on PyPI. User trials, independent competitor workflow measurement, and market validation remain pending; use docs/TRIAL_KIT.md to participate.
+Install from PyPI with `python -m pip install pocketforge==0.1.0a3`, install the wheel from the matching GitHub release, or clone the repository and use the lockfile. User trials, independent competitor workflow measurement, and market validation remain pending; use docs/TRIAL_KIT.md to participate.
