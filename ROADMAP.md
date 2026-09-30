@@ -1,7 +1,7 @@
 # PocketForge — roadmap to an open-source alpha
 
 Created: September 29, 2026. Status: alpha engineering delivered; independent adoption pending.
-Public repository: varunbiluri/pocketforge. PyPI package: pocketforge 0.1.0a5. Domain and trademark clearance remain unverified.
+Public repository: varunbiluri/pocketforge. PyPI package: pocketforge 0.1.0a6. Domain and trademark clearance remain unverified.
 
 ## Product and audience
 
@@ -95,7 +95,7 @@ Suggested adoption targets, not forecasts: five independent trials, three comple
 - [x] Contribution guide, issue templates, support policy, and trial kit ready.
 - [ ] Independent developer trials, integrations, and retention targets achieved — no testers yet.
 - [ ] Commercial competitor usability trials completed — access/participants unavailable.
-- [x] PyPI publication — v0.1.0a5 published through trusted publishing.
+- [x] PyPI publication — v0.1.0a6 published through trusted publishing.
 
 The public alpha can be distributed through GitHub artifacts without claiming these external validation items are complete. Package registry publication and independent user outcomes must not be inferred from implementation or stars.
 
@@ -126,7 +126,7 @@ These sources were reviewed during the September 29 planning conversation. Reche
 | 3 — pretrained training | Pinned MiniLM frozen mode and optional encoder fine-tuning implemented; offline reload integration tested; full BANKING77 experiments recorded. |
 | 4 — usable preview | Readable HTML, external prediction imports, warm timing, cost worksheet, walkthrough, and examples implemented. Independent usability unvalidated. |
 | 5 — reliability and trials | Edge cases tested; two further tasks work without core changes. Trial kit prepared at user's request; no trial results collected. |
-| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, CI, GitHub release assets, and PyPI v0.1.0a5 publication completed. |
+| 6 — release preparation | MIT license, third-party notices, issue templates, versioned wheel/sdist, CI, GitHub release assets, and PyPI v0.1.0a6 publication completed. |
 
 Measured BANKING77 accuracy: TF-IDF 87.56%, frozen MiniLM 90.19%, one-epoch adapted MiniLM 87.20% on our modified split. The adaptation regression is retained and disclosed. See benchmarks/BANKING77.md and benchmarks/results for the protocol and evidence.
 
@@ -145,8 +145,8 @@ No autonomous outreach or background monitoring is scheduled. Next external work
 - [ ] Complete representative current-system comparison with authorized data/access — [issue #6](https://github.com/varunbiluri/pocketforge/issues/6).
 - [ ] Complete commercial competitor usability comparisons — [issue #7](https://github.com/varunbiluri/pocketforge/issues/7).
 - [ ] Expand actionable CLI error coverage from trial failures — [issue #8](https://github.com/varunbiluri/pocketforge/issues/8).
-- [ ] Consider additional starter-task options for `pocketforge init` — [issue #9](https://github.com/varunbiluri/pocketforge/issues/9).
-- [ ] Evaluate a batch prediction command if trials confirm demand — [issue #10](https://github.com/varunbiluri/pocketforge/issues/10).
+- [x] Add additional starter-task options for `pocketforge init` — [issue #9](https://github.com/varunbiluri/pocketforge/issues/9).
+- [x] Add batch prediction command support — [issue #10](https://github.com/varunbiluri/pocketforge/issues/10).
 - [ ] Prevent stale release-status docs after future releases — [issue #11](https://github.com/varunbiluri/pocketforge/issues/11).
 
 These implementation checkmarks do not claim external validation. No outreach has been performed.

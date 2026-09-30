@@ -228,6 +228,39 @@ def artifact_digest(run, name):
     return digest(json.dumps(entries).encode())
 
 
+def read_prediction_rows(path):
+    path = Path(path)
+    raw = path.read_bytes()
+    text = raw.decode("utf-8")
+    if path.suffix == ".jsonl":
+        rows = [json.loads(line) for line in text.splitlines() if line.strip()]
+    elif path.suffix == ".csv":
+        reader = csv.DictReader(io.StringIO(text))
+        fields = reader.fieldnames or []
+        if len(fields) != len(set(fields)):
+            raise ContractError("prediction input: duplicate CSV column names.")
+        rows = list(reader)
+    else:
+        raise ContractError("prediction input: use .csv or .jsonl.")
+    if not rows:
+        raise ContractError("prediction input: empty dataset.")
+    for index, row in enumerate(rows, 1):
+        if not isinstance(row, dict) or "text" not in row or not isinstance(row["text"], str) or not row["text"].strip() or len(row["text"]) > 10000:
+            raise ContractError(f"prediction input row {index}: text must have 1–10000 characters and not be blank.")
+    return rows
+
+
+def predict_many(run, rows):
+    model, manifest = load_model(run)
+    labels = [str(label) for label in model.predict([row["text"] for row in rows]).tolist()]
+    predictions = []
+    for index, (row, label) in enumerate(zip(rows, labels)):
+        item = {key: value for key, value in row.items()}
+        item["row_index"] = index
+        item["prediction"] = label
+        predictions.append(item)
+    return {"run": str(Path(run)), "selected_model": manifest["selected_model"], "predictions": predictions}
+
 def predict(run, text):
     if not isinstance(text, str) or not text.strip() or len(text) > 10000:
         raise ContractError("text must have 1–10000 characters and not be blank.")

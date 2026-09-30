@@ -8,11 +8,11 @@ Use Python 3.11 or 3.12 for this alpha. If your `python3` is newer or its virtua
 
 ```bash
 uv venv --python 3.12 .venv
-uv pip install --python .venv/bin/python pocketforge==0.1.0a5
+uv pip install --python .venv/bin/python pocketforge==0.1.0a6
 .venv/bin/python -m pocketforge.cli --help
 ```
 
-`uv` can print warnings while it skips old dependency files published by upstream packages. Treat those as harmless when the install exits successfully and shows `pocketforge==0.1.0a5` in the installed package list.
+`uv` can print warnings while it skips old dependency files published by upstream packages. Treat those as harmless when the install exits successfully and shows `pocketforge==0.1.0a6` in the installed package list.
 
 For the fastest first run, generate a valid starter task:
 
@@ -21,6 +21,8 @@ For the fastest first run, generate a valid starter task:
 .venv/bin/python -m pocketforge.cli validate starter-intents/task.yaml
 .venv/bin/python -m pocketforge.cli train starter-intents/task.yaml --output runs/starter-intents
 .venv/bin/python -m pocketforge.cli evaluate runs/starter-intents --task starter-intents/task.yaml
+printf 'text\nI need help with a wrong invoice\nThe dashboard is broken\n' > starter-requests.csv
+.venv/bin/python -m pocketforge.cli predict runs/starter-intents --input starter-requests.csv --output starter-predictions.json
 ```
 
 ## Your own task
@@ -136,3 +138,14 @@ Edit all assumptions to match your workload. The example is hypothetical INR ari
 ## Deployment
 
 Copy the complete trusted run directory to an environment matching its manifest. Load once with `model, manifest = pocketforge.core.load_model(run)` and reuse `model.predict([...])` for batch application calls. The CLI `predict` loads per invocation; benchmark measures already-loaded inference. No hosted service is required. Joblib files execute code when loading: never load an untrusted run.
+
+## Batch prediction
+
+After training a run, classify a UTF-8 CSV or JSONL file containing a `text` field:
+
+```bash
+printf 'text\nI need help with a wrong invoice\nThe dashboard is broken\n' > requests.csv
+python -m pocketforge.cli predict runs/customer-intents --input requests.csv --output predictions.json
+```
+
+The JSON output records the selected model, each zero-based `row_index`, original input fields, and `prediction`. Blank or missing text rows fail before predictions are written.
